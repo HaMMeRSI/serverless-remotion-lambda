@@ -1,6 +1,6 @@
 {
     "name": "serverless-remotion-lambda",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A serverless framework plugin to automate deployment of remotion on AWS lambda",
     "main": "index.js",
     "scripts": {
