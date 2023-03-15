@@ -1,0 +1,36 @@
+{
+    "name": "serverless-remotion-lambda",
+    "version": "1.0.0",
+    "description": "A serverless framework plugin to automate deployment of remotion on AWS lambda",
+    "main": "index.js",
+    "scripts": {
+        "deploy": "publish",
+        "prettier": "prettier --ignore-path .gitignore --write \"**/*.js\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HaMMeRSI/serverless-remotion-lambda.git"
+    },
+    "keywords": [
+        "remotion",
+        "remotion-lambda",
+        "serverless",
+        "serverless-plugin"
+    ],
+    "author": "Sagi Hammer <sagi.hammer@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/HaMMeRSI/serverless-remotion-lambda/issues"
+    },
+    "homepage": "https://github.com/HaMMeRSI/serverless-remotion-lambda#readme",
+    "devDependencies": {
+        "prettier": "^2.8.4"
+    },
+    "dependencies": {
+        "@remotion/lambda": "^3.3.76",
+        "remotion": "^3.3.76"
+    },
+    "peerDependencies": {
+        "serverless": "1 || 2 || 3"
+    }
+}
