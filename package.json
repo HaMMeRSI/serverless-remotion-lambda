@@ -4,7 +4,6 @@
     "description": "A serverless framework plugin to automate deployment of remotion on AWS lambda",
     "main": "index.js",
     "scripts": {
-        "deploy": "publish",
         "prettier": "prettier --ignore-path .gitignore --write \"**/*.js\""
     },
     "repository": {
