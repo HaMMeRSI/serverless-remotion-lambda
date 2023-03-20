@@ -3,7 +3,7 @@ const path = require('path');
 const { deployFunction, deploySite, getOrCreateBucket, deleteFunction, getFunctions } = require('@remotion/lambda');
 const { VERSION } = require('remotion');
 
-const iam = require('./iam');
+const resources = require('./iam');
 
 const SITE_ID = `remotion-render-app-${VERSION}`;
 
@@ -51,10 +51,10 @@ class RemotionPlugin {
     init() {
         this.serverless.service.resources.Resources = {
             ...this.serverless.service.resources.Resources,
-            ...iam,
+            ...resources,
         };
 
-        this.serverless.cli.log('Initialized Remotion plugin, added IAM');
+        this.serverless.cli.log('Initialized Remotion plugin, added resources');
     }
 
     remove() {
@@ -64,7 +64,23 @@ class RemotionPlugin {
     async afterDeploy() {
         const stage = this.provider.getStage();
         const region = this.provider.getRegion();
-        const UserName = iam.RemotionUser.Properties.UserName;
+        const UserName = resources.RemotionUser.Properties.UserName;
+
+        this.serverless.cli.log('Deploying Remotion plugin');
+
+        const oldKeys = await this.provider.request('IAM', 'listAccessKeys', { UserName }, stage, region);
+        const deletePromises = oldKeys['AccessKeyMetadata'].map(
+            async key =>
+                await this.provider.request(
+                    'IAM',
+                    'deleteAccessKey',
+                    { UserName, AccessKeyId: key.AccessKeyId },
+                    stage,
+                    region
+                )
+        );
+
+        await Promise.all(deletePromises);
 
         const {
             AccessKey: { AccessKeyId, SecretAccessKey },
@@ -78,7 +94,7 @@ class RemotionPlugin {
         let lastError = null;
 
         do {
-            if ((Date.now() - time) / 1000 > this.pOptions.timeoutInSeconds * 1000) {
+            if ((Date.now() - time) / 1000 > this.pOptions.timeoutInSeconds) {
                 this.serverless.cli.log('Deploying remotion timed out - no function deployed');
                 throw lastError;
             }
@@ -87,6 +103,10 @@ class RemotionPlugin {
                 redo = false;
                 await this.deployLambda();
             } catch (e) {
+                if (e.Code !== 'InvalidClientTokenId') {
+                    throw e;
+                }
+
                 redo = true;
                 lastError = e;
                 await new Promise(resolve => setTimeout(resolve, 2500));
