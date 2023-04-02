@@ -1,6 +1,6 @@
 {
     "name": "serverless-remotion-lambda",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A serverless framework plugin to automate deployment of remotion on AWS lambda",
     "main": "index.js",
     "scripts": {
@@ -26,8 +26,8 @@
         "prettier": "^2.8.4"
     },
     "dependencies": {
-        "@remotion/lambda": "^3.3.76",
-        "remotion": "^3.3.76"
+        "@remotion/lambda": "^3.3.80",
+        "remotion": "^3.3.80"
     },
     "peerDependencies": {
         "serverless": "1 || 2 || 3"
