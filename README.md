@@ -37,11 +37,16 @@ custom:
     deployRegions: 
         - us-west-2
     timeoutInSeconds: 20
+    bucketName: null
+    siteId: remotion-render-app-${remotion.version}
 
 ```
 
-> Note: `entryPoint, deployStage, deployRegions` are mandatory.
-
+> Notes:
+> - `entryPoint, deployStage, deployRegions` are mandatory.
+> - bucketName: `null` to create new, `remotionlambda-{name}` to use your own.
+    >   - can ref to s3 bucket name in stack 
+> - siteId: will append `{remotion.version}` automatically to the name
 <br/>
 
 # Remotion Lambda
